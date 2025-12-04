@@ -34,7 +34,7 @@ describe('Parsing names', function() {
                 suffix: 'III',
                 fullName: 'Mr. William R. Hearst, III'
             }
-        }, {
+        },{
             name: 'William Randolph Hearst',
             result: {
                 firstName: 'William',
