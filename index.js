@@ -145,6 +145,7 @@ parser.parseName = function (name) {
             attrs.middleName = parts.join(' ');
         }
 
+        // TODO: Discus removing the commented below
         //remove comma like "<lastName>, Jr."
         // if ( attrs.lastName ) {
         //     attrs.lastName = attrs.lastName.replace(',', '');
