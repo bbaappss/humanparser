@@ -79,26 +79,51 @@ parser.parseName = function (name) {
 
         
     } else {
-    //first name first format
-
+        //first name first format
 
         if ( parts.length > 1 && _.indexOf(salutations, _.first(parts).toLowerCase().replace(/\./g, '')) > -1) {
             attrs.salutation = parts.shift();
-            attrs.firstName = parts.shift();
+            if (parts.length == 1) {
+                attrs.lastName = parts.shift();
+            } else {
+                switch (parts.length) { 
+                    case 1:
+                        attrs.firstName = parts.shift();
+                        break;
+                    case 2:
+                        attrs.firstName = parts.shift();
+                        attrs.lastName = parts.shift();
+                        break;
+                    default:
+                        attrs.firstName = parts.shift();
+                        attrs.lastName  = parts.length ? parts.pop() : '';
+                        break;
+                }
+            }
         } else {
-            attrs.firstName = parts.shift();
+            switch(parts.length) {
+                case 1:
+                    attrs.firstName = parts.shift();
+                    attrs.lastName = "";
+                    break;
+                case 2:
+                    attrs.firstName = parts.shift();
+                    attrs.lastName = parts.shift();
+                    break;
+                default: 
+                    attrs.firstName = parts.shift();
+                    attrs.lastName  = parts.length ? parts.pop() : '';
+                    break;
+            }
         }
-
-        attrs.lastName  = parts.length ? parts.pop() : '';
-
+        
         // test for compound last name, we reverse because middle name is last bit to be defined.
         // We already know lastname, so check next word if its part of a compound last name.
         var revParts = parts.slice(0).reverse();
 				var compoundParts = [];
-
+                
         _.every(revParts, function(part, i, all){
             var test = part.toLowerCase().replace(/\./g, '');
-
             if (_.indexOf(compound, test) > -1 ) {
                 compoundParts.push(part);
 
@@ -121,15 +146,13 @@ parser.parseName = function (name) {
         }
 
         //remove comma like "<lastName>, Jr."
-        if ( attrs.lastName ) {
-            attrs.lastName = attrs.lastName.replace(',', '');
-        }
-
+        // if ( attrs.lastName ) {
+        //     attrs.lastName = attrs.lastName.replace(',', '');
+        // }
         //save a copy of original
         attrs.fullName = name;
 
     }
-    //console.log('attrs:', JSON.stringify(attrs));
     return attrs;
 };
 
